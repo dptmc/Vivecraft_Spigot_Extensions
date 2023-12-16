@@ -11,8 +11,10 @@
     <!-- I am not sure if that could be changed to use ${version.bukkit}, maybe? -->
     <properties>
         <version.bukkit>1.20.4-R0.1-SNAPSHOT</version.bukkit>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <distributionManagement>
         <repository>
@@ -27,6 +29,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
+            <version>${version.bukkit}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Spigot -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
             <version>${version.bukkit}</version>
             <scope>provided</scope>
         </dependency>
@@ -68,16 +77,15 @@
         </repository>
     </repositories>
     <build>
+        <finalName>${project.name}-${project.version}</finalName>
 		<defaultGoal>install</defaultGoal>
         <plugins>
             <!-- Compiler plugin, does the building -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.10.1</version> <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin -->
                 <configuration>
-					<source>1.8</source>
-					<target>1.8</target>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                     <compilerArgs>
@@ -86,6 +94,14 @@
                     <excludes>
                     </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
