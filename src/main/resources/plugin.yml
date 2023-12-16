@@ -1,0 +1,50 @@
+name: Vivecraft-Spigot-Extensions
+version: '1.20.4-RC1'
+api-version: '1.20'
+main: org.vivecraft.VSE
+website: http://www.vivecraft.org/
+author: jrbudda, jaron780, DartPower
+prefix: Vivecraft
+softdepend: [Vault]
+commands:
+   vse:
+      aliases: [Vive]
+      description: Vivecraft Spigot Extensions
+      usage: /<command> <command>
+permissions:
+   vive.use:
+      default: true
+      description: Whether or not to provide server integrations to that player
+   vive.climbanywhere:
+      default: op
+      description: Permission to override climb limitations.
+   vive.command.vive-only:
+      default: op
+      description: Access to the /vse vive-only command
+   vive.command.sendplayerdata:
+      default: op
+      description: Access to the /vse sendplayerdata command
+   vive.command.creeperradius:
+      default: op
+      description: Access to the /vse creeperradius command
+   vive.command.waittime:
+      default: op
+      description: Access to the /vse waittime command
+   vive.command.bow:
+      default: op
+      description: Access to the /vse bow command
+   vive.command.list:
+      default: true
+      description: Access to the /vse list command
+   vive.command.set:
+      default: op
+      description: Access to the /vse set command
+   vive.command.version:
+      default: true
+      description: Access to the /vse version command
+   vive.command.checkforupdate:
+      default: op
+      description: Access to the /vse checkforupdate command
+   vive.command.help:
+      default: true
+      description: Access to the /vse help command

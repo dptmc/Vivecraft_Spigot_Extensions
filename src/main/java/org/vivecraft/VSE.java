@@ -18,10 +18,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftCreeper;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEnderman;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftCreeper;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEnderman;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -155,9 +155,9 @@ public class VSE extends JavaPlugin implements Listener {
 		}				
 		// end Config part
 
-		getCommand("vive").setExecutor(new ViveCommand(this));
+		//getCommand("vive").setExecutor(new ViveCommand(this));
 		getCommand("vse").setExecutor(new ViveCommand(this));
-		getCommand("vive").setTabCompleter(new ConstructTabCompleter());
+		//getCommand("vive").setTabCompleter(new ConstructTabCompleter());
 		getCommand("vse").setTabCompleter(new ConstructTabCompleter());
 
 		getServer().getMessenger().registerIncomingPluginChannel(this, CHANNEL, new VivecraftNetworkListener(this));
@@ -340,7 +340,7 @@ public class VSE extends JavaPlugin implements Listener {
 
 					if(kick) {
 						if (getConfig().getBoolean("general.vive-only")) {
-							if (getConfig().getBoolean("general.allow-op") == false || !p.isOp()) {
+							if (!getConfig().getBoolean("general.allow-op") || !p.isOp() || !p.hasPermission("vivecraft.bypass")) {
 								getLogger().info(p.getName() + " " + "got kicked for not using Vivecraft");
 								p.kickPlayer(getConfig().getString("general.vive-only-kickmessage"));
 							}						

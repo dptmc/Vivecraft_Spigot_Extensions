@@ -1,0 +1,52 @@
+name: Nightly CI
+
+on:
+  push:
+    paths:
+    - 'src/**'
+    - 'pom.xml'
+    - '.github/workflows/maven.yml'
+    branches: [ 1.20.4 ]
+
+  pull_request:
+    paths:
+    - 'src/**'
+    - 'pom.xml'
+    branches: [ 1.20.4 ]
+
+jobs:
+  compile:
+    name: Maven compiler
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Java 17 setup
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-package: jdk
+        java-version: '17'
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    - name: Run Spigot-BuildTools
+      if: steps.spigot.outputs.cache-hit != 'true'
+      run: |
+       mkdir -p .spigot-buildtools
+        cd .spigot-buildtools
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.20.4
+        cd ..
+        rm -R .spigot-buildtools
+      env:
+        SPIGOT_M2: ~/.m2/repository/org/spigotmc/spigot
+    - name: Build with Maven
+      run: 'mvn -B -Duser.name="GitHub Runner on $GITHUB_REPOSITORY (id=$GITHUB_RUN_ID)" clean package'
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: /home/runner/work/Vivecraft_Spigot_Extensions/Vivecraft_Spigot_Extensions/target/
